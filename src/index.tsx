@@ -6,19 +6,16 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import CampaignList from './components/campaign-list/campaign-list';
+import MainNavigation from './components/main-navigation/main-navigation';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
-    loader: rootLoader,
-    children: [
-      {
-        path: "team",
-        element: <Team />,
-        loader: teamLoader,
-      },
-    ],
+    element: <>
+    <MainNavigation />
+    <CampaignList />
+    </>,
   },
 ]);
 
@@ -27,7 +24,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <span className='text-sm'>React 18</span>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
