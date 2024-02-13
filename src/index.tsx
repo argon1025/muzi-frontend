@@ -6,16 +6,12 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import CampaignList from './components/campaign-list/campaign-list';
-import MainNavigation from './components/main-navigation/main-navigation';
+import MainPage from './pages/main-page';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <>
-    <MainNavigation />
-    <CampaignList />
-    </>,
+    element: <MainPage />,
   },
 ]);
 
