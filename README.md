@@ -33,8 +33,6 @@
 
 브랜치 정책
 
-- 브랜치를 병합하기 위해서는 반드시 PR을 생성하고 테스트가 통과되어야 합니다.
-  - PR 생성 시 [테스트 자동화 액션](https://github.com/argon1025/muzi-backend/actions/workflows/pull-request-test.yaml)이 자동으로 수행됩니다.
 - 각 이슈별로 브랜치를 분리합니다.
   - 브랜치 명칭은 `{feature|fix}-#{이슈 번호}` 로 생성합니다. ex) `feature-#19`
 - `Main` `Develop` 브랜치는 리니어 하게 관리합니다.
