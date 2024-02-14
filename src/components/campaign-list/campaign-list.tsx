@@ -86,34 +86,34 @@ const CampaignList = () => {
                     <button
                         onClick={() => categoryButtonHandler('방문')}
                         disabled={selectedCategory === '방문'}
-                        className={`text-2xl mr-4 underline-offset-8 ${selectedCategory === '방문' && 'text-sky-400 underline decoration-sky-400'}`}
+                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '방문' && 'text-sky-400 underline decoration-sky-400'}`}
                     >
                         방문형
                     </button>
                     <button
                         onClick={() => categoryButtonHandler('배송')}
                         disabled={selectedCategory === '배송'}
-                        className={`text-2xl mr-4 underline-offset-8 ${selectedCategory === '배송' && 'text-sky-400 underline decoration-sky-400'}`}
+                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '배송' && 'text-sky-400 underline decoration-sky-400'}`}
                     >
                         배송형
                     </button>
                     <button
                         onClick={() => categoryButtonHandler('기자단')}
                         disabled={selectedCategory === '기자단'}
-                        className={`text-2xl mr-4 underline-offset-8 ${selectedCategory === '기자단' && 'text-sky-400 underline decoration-sky-400'}`}
+                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '기자단' && 'text-sky-400 underline decoration-sky-400'}`}
                     >
                         기자단
                     </button>
                     <button
                         onClick={() => categoryButtonHandler('기타')}
                         disabled={selectedCategory === '기타'}
-                        className={`text-2xl mr-4 underline-offset-8 ${selectedCategory === '기타' && 'text-sky-400 underline decoration-sky-400'}`}
+                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '기타' && 'text-sky-400 underline decoration-sky-400'}`}
                     >
                         기타
                     </button>
             </div>
             <div className="w-full max-w-7xl px-10">
-                <div className="grid grid-cols-2 gap-[15px] lg:grid-cols-3 xl:grid-cols-5">
+                <div className="grid grid-cols-2 gap-[15px] gap-y-[50px] lg:grid-cols-3 xl:grid-cols-5">
                     {campaignList.map((campaign)=>Campaign(campaign))}
                 </div>
             </div>
