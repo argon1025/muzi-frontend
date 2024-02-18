@@ -104,9 +104,12 @@ const CampaignList = () => {
   return (
     <div className="flex flex-col w-full items-center p-[10px]">
       <CampaignProviderBar />
-      <CampaignCategoryBar />
-      <div className="flex flex-row w-full max-w-5xl items-center ">
+      <div className="flex flex-col w-full max-w-5xl bg-sky-50 rounded-lg border border-sky-100 p-5 mt-3">
+        <span className="text-sky-400">체험단 유형</span>
+        <CampaignCategoryBar />
+        <span className="text-sky-400 mt-4">지역</span>
         <CampaignAddressBar />
+        <span className="text-sky-400 mt-4">타이틀</span>
         <CampaignTitleBar />
       </div>
       <div className="w-full max-w-5xl pt-[20px]">

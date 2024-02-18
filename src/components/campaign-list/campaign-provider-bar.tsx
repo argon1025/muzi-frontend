@@ -41,7 +41,7 @@ const unSelectedTextStyle = "mt-[21px] text-base text-gray-500 cursor-pointer";
 const selectedButtonStyle =
   "flex flex-col py-[30px] px-[16px] w-[111px] h-[164px] items-center justify-center cursor-default";
 const unSelectedButtonStyle =
-  "flex flex-col py-[30px] px-[16px] w-[111px] h-[164px] items-center justify-center cursor-pointer hover:bg-gray-100 rounded-[12px] transition duration-150 ease-in-out";
+  "flex flex-col py-[30px] px-[16px] w-[111px] h-[164px] items-center justify-center cursor-pointer hover:border hover:border-sky-100 hover:bg-sky-50 rounded-[12px] transition duration-300 ease-in-out";
 
 const CampaignProviderBar = () => {
   const [searchParams, setSearchParams] = useSearchParams();

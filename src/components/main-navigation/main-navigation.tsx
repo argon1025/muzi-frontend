@@ -15,7 +15,7 @@ const MainNavigation = () => {
           <div className="ml-auto"></div>
         </div>
       </div>
-      <div className="flex w-full h-9 bg-sky-100 justify-center items-center">
+      <div className="flex w-full h-9 bg-sky-50 justify-center items-center">
         <span className="text-sky-400 text-base">블로그 체험단의 모든것을 모아보는 체험단무지</span>
       </div>
     </div>
