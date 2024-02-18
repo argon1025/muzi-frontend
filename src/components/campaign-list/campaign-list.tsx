@@ -4,121 +4,135 @@ import Campaign from "./campaign";
 import { useSearchParams } from "react-router-dom";
 import { CampaignInfo } from "../../data-sources/type/muzi.data-source.type";
 import { getCampaignList } from "../../data-sources/muzi.data-source";
-
+import CampaignCategoryBar from "./campaign-category-bar";
+import CampaignProviderBar from "./campaign-provider-bar";
+import CampaignAddressBar from "./campaign-address-bar";
+import CampaignTitleBar from "./campaign-title-bar";
+import CampaignSkeleton from "./campaign-skeleton";
 
 const CampaignList = () => {
-    const [page, setPage] = useState(1);
-    const [campaignList, setCampaignList] = useState<CampaignInfo[]>([]);
-    const [campaignListLoading, setCampaignListLoading] = useState<boolean>(false);
-    const [isCampaignListEnd, setIsCampaignListEnd] = useState<boolean>(false);
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
-    const observer = useRef<IntersectionObserver | null>(null);
-    const [searchParams, setSearchParams] = useSearchParams();
+  // URL 쿼리 파라미터 상태
+  const [searchParams] = useSearchParams();
 
-    const categoryButtonHandler = (category:string) => {
-        setSelectedCategory(category);
-        setSearchParams({category});
+  // 캠페인 목록 상태
+  const [page, setPage] = useState(1); // 페이지 번호
+  const [campaignList, setCampaignList] = useState<CampaignInfo[]>([]); // 캠페인 목록
+  const [isLoading, setIsLoading] = useState<boolean>(false); // 캠페인 목록 첫 로딩 상태
+  const [isContinueLoading, setIsContinueLoading] = useState<boolean>(false); // 캠페인 목록 추가 로딩 상태
+  const [isCampaignListEnd, setIsCampaignListEnd] = useState<boolean>(false); // 캠페인 목록의 끝 여부
+  const observer = useRef<IntersectionObserver | null>(null); // 무한 스크롤을 위한 observer
+
+  /** 첫 컴포넌트 로드 처리 */
+  useEffect(() => {
+    const queryCategory = searchParams.get("category");
+    const queryProvider = searchParams.get("provider");
+    const queryAddress = searchParams.get("address");
+    const queryTitle = searchParams.get("title");
+
+    setCampaignList([]);
+    setIsCampaignListEnd(false);
+    setPage(1);
+
+    const fetchData = async () => {
+      setIsLoading(true);
+      const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+      await wait(500);
+      const result = await getCampaignList({
+        page: 1,
+        size: 16,
+        hasAvailable: true,
+        ...(queryCategory && { category: queryCategory }),
+        ...(queryProvider && queryProvider !== "all" && { provider: queryProvider }),
+        ...(queryAddress && queryAddress !== "전체" && { address: queryAddress }),
+        ...(queryTitle && { title: queryTitle }),
+      });
+      if (result.list.length === 0) {
+        setIsCampaignListEnd(true);
+      }
+      setCampaignList(result.list);
+      setIsLoading(false);
     };
 
-    /** 카테고리 파라미터 변경 이벤트 처리 */
-    useEffect(() => {
-        // URL 쿼리 파라미터로부터 category 값을 읽어옵니다.
-        const queryCategory = searchParams.get('category');
-        if (queryCategory) {
-            setSelectedCategory(queryCategory);
-        }else{
-            setSelectedCategory('방문');
-            setSearchParams({category:'방문'});
+    fetchData();
+  }, [searchParams]);
+
+  /** 페이지 변경 이벤트처리 */
+  useEffect(() => {
+    const queryCategory = searchParams.get("category");
+    const queryProvider = searchParams.get("provider");
+    const queryAddress = searchParams.get("address");
+    const queryTitle = searchParams.get("title");
+
+    const fetchData = async () => {
+      setIsContinueLoading(true);
+      const result = await getCampaignList({
+        page,
+        size: 16,
+        hasAvailable: true,
+        ...(queryCategory && { category: queryCategory }),
+        ...(queryProvider && queryProvider !== "all" && { provider: queryProvider }),
+        ...(queryAddress && queryAddress !== "전체" && { address: queryAddress }),
+        ...(queryTitle && { title: queryTitle }),
+      });
+      if (result.list.length === 0) {
+        setIsCampaignListEnd(true);
+      }
+      setCampaignList((campaignList) => [...campaignList, ...result.list]);
+      setIsContinueLoading(false);
+    };
+
+    if (page === 1) return;
+    fetchData();
+  }, [page]);
+
+  /** 무한 스크롤 이벤트 처리 */
+  const lastElementRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (isContinueLoading || isLoading) return; // 로딩 중이면 observer를 연결하지 않음
+      if (observer.current) observer.current.disconnect(); // 기존 observer 연결 해제
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !isCampaignListEnd) {
+          // 교차하면 페이지 번호 증가시키고 추가 데이터 로드
+          setPage((prevPageNumber) => prevPageNumber + 1);
         }
+      });
+      if (node) observer.current.observe(node); // 새 노드에 observer 연결
+    },
+    [isContinueLoading, isLoading]
+  );
 
-        setCampaignList([]);
-        setIsCampaignListEnd(false);
-        setPage(1);
-
-        const fetchData = async () => {
-            setCampaignListLoading(true);
-            const result = await getCampaignList({page: 1, size: 10, hasAvailable: true, ...(queryCategory && {category: queryCategory})});
-            if (result.list.length === 0) {
-                setIsCampaignListEnd(true);
-            }
-            setCampaignList(result.list);
-            setCampaignListLoading(false);
-        };
-    
-        fetchData();
-    }, [searchParams]);
-    
-    /** 페이지 변경 이벤트처리 */
-    useEffect(() => {
-        // URL 쿼리 파라미터로부터 category 값을 읽어옵니다.
-        const queryCategory = searchParams.get('category');
-        const fetchData = async () => {
-            setCampaignListLoading(true);
-            const result = await getCampaignList({page, size:10, hasAvailable:true, ...(queryCategory && {category: queryCategory})});
-            if(result.list.length === 0){
-                setIsCampaignListEnd(true);
-            }
-            setCampaignList((campaignList)=>[...campaignList, ...result.list]);
-            setCampaignListLoading(false);
-        };
-
-        if (page === 1) return;
-        fetchData();
-      }, [page]);
-
-      /** 무한 스크롤 이벤트 처리 */
-      const lastElementRef = useCallback((node:HTMLDivElement|null) => {
-        if (campaignListLoading) return; // 로딩 중이면 observer를 연결하지 않음
-        if (observer.current) observer.current.disconnect(); // 기존 observer 연결 해제
-        observer.current = new IntersectionObserver(entries => {
-          if (entries[0].isIntersecting && !isCampaignListEnd) {
-            // 교차하면 페이지 번호 증가시키고 추가 데이터 로드
-            setPage(prevPageNumber => prevPageNumber + 1);
-          }
-        });
-        if (node) observer.current.observe(node); // 새 노드에 observer 연결
-      }, [campaignListLoading]);
-
-    
-    return (
-        <div className="flex flex-col w-full items-center">
-                <div className="w-full max-w-7xl p-10 ">
-                    <button
-                        onClick={() => categoryButtonHandler('방문')}
-                        disabled={selectedCategory === '방문'}
-                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '방문' && 'text-sky-400 underline decoration-sky-400'}`}
-                    >
-                        방문형
-                    </button>
-                    <button
-                        onClick={() => categoryButtonHandler('배송')}
-                        disabled={selectedCategory === '배송'}
-                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '배송' && 'text-sky-400 underline decoration-sky-400'}`}
-                    >
-                        배송형
-                    </button>
-                    <button
-                        onClick={() => categoryButtonHandler('기자단')}
-                        disabled={selectedCategory === '기자단'}
-                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '기자단' && 'text-sky-400 underline decoration-sky-400'}`}
-                    >
-                        기자단
-                    </button>
-                    <button
-                        onClick={() => categoryButtonHandler('기타')}
-                        disabled={selectedCategory === '기타'}
-                        className={`text-xl mr-4 underline-offset-8 ${selectedCategory === '기타' && 'text-sky-400 underline decoration-sky-400'}`}
-                    >
-                        기타
-                    </button>
-            </div>
-            <div className="w-full max-w-7xl px-10">
-                <div className="grid grid-cols-2 gap-[15px] gap-y-[50px] lg:grid-cols-3 xl:grid-cols-5">
-                    {campaignList.map((campaign)=>Campaign(campaign))}
-                </div>
-            </div>
-            <div ref={lastElementRef}></div>
+  return (
+    <div className="flex flex-col w-full items-center p-[10px]">
+      <CampaignProviderBar />
+      <CampaignCategoryBar />
+      <div className="flex flex-row w-full max-w-5xl items-center ">
+        <CampaignAddressBar />
+        <CampaignTitleBar />
+      </div>
+      <div className="w-full max-w-5xl pt-[20px]">
+        <div className="grid grid-cols-2 gap-[15px] gap-y-[50px] lg:grid-cols-4">
+          {isLoading ? (
+            <>
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+              <CampaignSkeleton />
+            </>
+          ) : (
+            campaignList.map((campaign) => Campaign(campaign))
+          )}
         </div>
-    );
-}
+      </div>
+      <div ref={lastElementRef}></div>
+    </div>
+  );
+};
 export default CampaignList;
