@@ -25,8 +25,11 @@ const CampaignAddressBar = () => {
   const addressList = ["전체", "대구", "서울", "부산", "인천", "광주", "경기", "강원", "대전", "제주", "충청"];
 
   return (
-    <div className="flex flex-row mt-[20px] items-center cursor-pointer" onClick={() => addressDropBoxHandler()}>
-      <h1 className="text-xl">{searchParams.get("address")}</h1>
+    <div
+      className="flex relative justify-center flex-row mt-[10px] items-center cursor-pointer w-[96px] h-[43px] bg-white border border-sky-400 rounded-lg"
+      onClick={() => addressDropBoxHandler()}
+    >
+      <h1 className="text-lg text-sky-500">{searchParams.get("address")}</h1>
       <div className="ml-[5px] h-[24px] w-[24px]">
         <img
           src={drop_down_enable}
@@ -35,7 +38,7 @@ const CampaignAddressBar = () => {
         />
       </div>
       {isActivated && (
-        <div className="absolute w-[241px] bg-white drop-shadow-md rounded-lg top-[420px] grid grid-cols-2 p-4 gap-5">
+        <div className="absolute w-[241px] bg-white drop-shadow-md rounded-lg top-[45px] left-[1px] grid grid-cols-2 p-4 gap-5 z-10">
           {addressList.map((address, index) => {
             return (
               <button
