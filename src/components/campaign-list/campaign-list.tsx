@@ -42,7 +42,7 @@ const CampaignList = () => {
         size: 16,
         hasAvailable: true,
         ...(queryCategory && { category: queryCategory }),
-        ...(queryProvider && queryProvider !== "all" && { provider: queryProvider }),
+        ...(queryProvider && queryProvider !== "all" && { resourceProvider: queryProvider }),
         ...(queryAddress && queryAddress !== "전체" && { address: queryAddress }),
         ...(queryTitle && { title: queryTitle }),
       });
@@ -70,7 +70,7 @@ const CampaignList = () => {
         size: 16,
         hasAvailable: true,
         ...(queryCategory && { category: queryCategory }),
-        ...(queryProvider && queryProvider !== "all" && { provider: queryProvider }),
+        ...(queryProvider && queryProvider !== "all" && { resourceProvider: queryProvider }),
         ...(queryAddress && queryAddress !== "전체" && { address: queryAddress }),
         ...(queryTitle && { title: queryTitle }),
       });

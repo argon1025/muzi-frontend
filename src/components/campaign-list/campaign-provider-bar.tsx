@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
-import dinner_queen_url from "../../resources/dinner-queen.png";
+import dinner_queen_url from "../../resources/provider-images/dinner-queen.png";
+import seoul_ouba_url from "../../resources/provider-images/seoulouba.png";
 import { useEffect } from "react";
 
 /**
@@ -31,13 +32,18 @@ const providerList: { provider: string; title: string; icon: JSX.Element }[] = [
     title: "디너의 여왕",
     icon: <img src={dinner_queen_url} alt="dinner-queen" className="w-full h-full" />,
   },
+  {
+    provider: "SEOUL_OUBA",
+    title: "서울오빠",
+    icon: <img src={seoul_ouba_url} alt="seoul-ouba" className="w-full h-full" />,
+  },
 ];
 
 /**
  * 버튼 스타일
  */
-const selectedTextStyle = "mt-[21px] text-base text-sky-400 cursor-default";
-const unSelectedTextStyle = "mt-[21px] text-base text-gray-500 cursor-pointer";
+const selectedTextStyle = "pt-[15px] text-base text-sky-400 cursor-default font-semibold";
+const unSelectedTextStyle = "pt-[15px] text-base text-gray-500 cursor-pointer";
 const selectedButtonStyle =
   "flex flex-col py-[30px] px-[16px] w-[111px] h-[164px] items-center justify-center cursor-default";
 const unSelectedButtonStyle =

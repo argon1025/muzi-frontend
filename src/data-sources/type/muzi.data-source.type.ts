@@ -1,7 +1,7 @@
 export interface GetCampaignListOptions {
   page: number;
   size: number;
-  provider?: string;
+  resourceProvider?: string;
   title?: string;
   address?: string;
   category?: string;

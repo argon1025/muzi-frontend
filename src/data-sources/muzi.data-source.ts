@@ -2,7 +2,7 @@ import axios from "axios";
 import { GetCampaignListOptions, GetCampaignListResponse } from "./type/muzi.data-source.type";
 
 const getCampaignList = async (options: GetCampaignListOptions): Promise<GetCampaignListResponse> => {
-  const { page, size, title, address, category, hasAvailable, provider } = options;
+  const { page, size, title, address, category, hasAvailable, resourceProvider } = options;
   try {
     const result = await axios.request<GetCampaignListResponse>({
       url: `https://backend.mu-zi.net/campaign`,
@@ -14,7 +14,7 @@ const getCampaignList = async (options: GetCampaignListOptions): Promise<GetCamp
         address,
         category,
         hasAvailable,
-        provider,
+        resourceProvider,
       },
     });
     return result.data;
