@@ -1,9 +1,20 @@
 import { CampaignInfo } from "../../data-sources/type/muzi.data-source.type";
-import dinner_queen_url from "../../resources/dinner-queen.png";
+import dinner_queen_url from "../../resources/provider-images/dinner-queen.png";
+import seoul_ouba_url from "../../resources/provider-images/seoulouba.png";
 import { DateTime } from "luxon";
 
 const getProvider = (provider: string) => {
   switch (provider) {
+    case "SEOUL_OUBA": {
+      return (
+        <div className="flex items-center">
+          <div className="overflow-hidden rounded-md">
+            <img src={seoul_ouba_url} alt="dinner-queen" className="w-5 h-5" />
+          </div>
+          <span className="text-sm text-gray-400 ml-1">서울오빠</span>
+        </div>
+      );
+    }
     case "DINNER_QUEEN":
       return (
         <div className="flex items-center">
@@ -14,7 +25,11 @@ const getProvider = (provider: string) => {
         </div>
       );
     default:
-      return "https://www.naver.com";
+      return (
+        <div className="flex items-center">
+          <span className="text-sm text-gray-400 ml-1">기타</span>
+        </div>
+      );
   }
 };
 
