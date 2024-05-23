@@ -7,7 +7,7 @@
     서로 다른 서비스의 맛집, 제품 체험단 공고 통합 조회 제공
     <br />
     <br />
-    <a href="https://mu-zi.net">Go to Service</a>
+    <a href="https://mu-zi.net">Go to Service (2024.05.01 End Service)</a>
     ·
     <a href="https://backend.mu-zi.net/api">View Swagger Doc</a>
     ·
